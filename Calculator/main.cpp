@@ -26,11 +26,11 @@ class Calculator
             // parse the expression, send two arguments to calculate()
         }
 
-        void Input(InputType inputDevice)
+        void Input(InputType inputFrom)
         {
-            device = inputDevice;
+            inputDevice = inputFrom;
 
-            if (InputType::Console == device)
+            if (InputType::Console == inputDevice)
             {
                 // use std::cin
             }
@@ -46,7 +46,7 @@ class Calculator
         {
             if (!calculationDone) return;
 
-            if (InputType::Console == device)
+            if (InputType::Console == inputDevice)
             {
                 std::cout << result << std::endl;
             }
@@ -69,7 +69,7 @@ class Calculator
     private:
         long double result;
         bool calculationDone;
-        InputType device;
+        InputType inputDevice;
 
         long double calculate(/*an array of digits and one consisting of operators*/)
         {
