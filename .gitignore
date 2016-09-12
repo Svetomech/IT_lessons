@@ -27,3 +27,9 @@
 *.exe
 *.out
 *.app
+
+# CodeBlocks
+*.depend
+*.layout
+[Oo]bj/*
+[Bb]in/*
