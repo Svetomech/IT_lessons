@@ -1,79 +1,125 @@
 #include <iostream>
 #include <fstream>
+//#include <array>
+//#include <exception>
+
+enum class InputType
+{
+    Console,
+    File,
+    Constructor
+};
+
+class CalculationNotDoneException: public std::exception
+{
+    virtual const char* what() const throw()
+    {
+        return "The Input() method should be executed before Output()";
+    }
+} calc_not_done;
 
 class Calculator
 {
     public:
-        enum InputType
-        {
-            Console,
-            File
-        };
-
         std::string InputFileName;
         std::string OutputFileName;
 
-        Calculator(std::string expression = "")
+        Calculator() :
+            InputFileName("Input.txt"),
+            OutputFileName("Output.txt"),
+            result(0),
+            calculationDone(false)
         {
-            // Default values
-            InputFileName = "Input.txt";
-            OutputFileName = "Output.txt";
-            result = 0;
-            calculationDone = false;
-
-            if (expression.empty()) return;
-
-            // parse the expression, send two arguments to calculate()
+            // empty constructor, totally legit
         }
 
-        void Input(InputType inputFrom)
+        Calculator(InputType inputFrom)
         {
-            inputDevice = inputFrom;
+            Calculator();
 
-            if (InputType::Console == inputDevice)
+            Input(inputFrom);
+        }
+
+        Calculator(InputType inputFrom, const std::string& expression)
+        {
+            Calculator();
+
+            Input(inputFrom, expression);
+        }
+
+        Calculator(InputType inputFrom, const std::string& inputFileName, const std::string& outputFileName)
+        {
+            Calculator();
+
+            InputFileName = inputFileName;
+            OutputFileName = outputFileName;
+
+            Input(inputFrom);
+        }
+
+        void Input(InputType inputFrom, const std::string& expression = "")
+        {
+            inputType = inputFrom;
+
+            if (InputType::Console == inputType)
             {
                 // use std::cin
             }
-            else
+            else if (InputType::File == inputType)
             {
                 // use std::ifstream
+            }
+            else if (InputType::Constructor == inputType)
+            {
+                // use string splitting
             }
 
             // parse the expression, send two arguments to calculate()
         }
 
-        void Output()
+        double Output()
         {
-            if (!calculationDone) return;
+            if (!calculationDone) throw calc_not_done;
 
-            if (InputType::Console == inputDevice)
+            if (InputType::Console == inputType)
             {
                 std::cout << result << std::endl;
             }
-            else
+            else if (InputType::File == inputType)
             {
                 std::ofstream outputFile(OutputFileName);
 
                 if (outputFile.is_open())
                 {
                     outputFile << result << std::endl;
-                }
-                else std::cout << "Can't create a file named " << OutputFileName << std::endl;
 
-                outputFile.close();
+                    outputFile.close();
+                }
+                else
+                {
+                    std::cout << "Can't create a file named " << OutputFileName << std::endl;
+
+                    return result;
+                }
+            }
+            else if (InputType::Constructor == inputType)
+            {
+                // nothing specific, just return the result
             }
 
             calculationDone = false;
+
+            return result;
         }
 
     private:
-        long double result;
+        double result;
         bool calculationDone;
-        InputType inputDevice;
+        InputType inputType;
 
-        long double calculate(/*an array of digits and one consisting of operators*/)
+        double calculate(/*array of digits, array of operators*/)
         {
-            // calculate the result
+            // calculate
 
             calculationDone = true;
         }
@@ -84,16 +130,14 @@ class Calculator
 int main()
 {
     // Use case #1 - expression comes from console
-    auto calc1 = new Calculator();
-    calc1->Input(Calculator::InputType::Console);
+    auto calc1 = new Calculator(InputType::Console); // Input() method called automatically
     calc1->Output();
 
     // Use case #2 - expression comes from file
-    auto calc2 = new Calculator();
-    calc2->Input(Calculator::InputType::File);
+    auto calc2 = new Calculator(InputType::File, "test.in", "test.out"); // custom filenames
     calc2->Output();
 
     // Use case #3 - expression in a constructor
-    auto calc3 = new Calculator("2 * 5 - 7 / 3 + (2 - 1 / 2)");
+    auto calc3 = new Calculator(InputType::Constructor, "2 * 5 - 7 / 3 + (2 - 1 / 2)"); // brackets supported
     calc3->Output();
 }
