@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
-//#include <array>
-//#include <exception>
+#include <vector>
 
 enum class InputType
 {
@@ -117,7 +116,7 @@ class Calculator
         bool calculationDone;
         InputType inputType;
 
-        double calculate(/*array of digits, array of operators*/)
+        double calculate(const std::vector<double>& digits, const std::vector<char>& operators)
         {
             // calculate
 
