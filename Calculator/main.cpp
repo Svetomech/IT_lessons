@@ -32,21 +32,21 @@ class Calculator
             // empty constructor, totally legit
         }
 
-        Calculator(InputType inputFrom)
+        Calculator(const InputType& inputFrom)
         {
             Calculator();
 
             Input(inputFrom);
         }
 
-        Calculator(InputType inputFrom, const std::string& expression)
+        Calculator(const InputType& inputFrom, const std::string& expression)
         {
             Calculator();
 
             Input(inputFrom, expression);
         }
 
-        Calculator(InputType inputFrom, const std::string& inputFileName, const std::string& outputFileName)
+        Calculator(const InputType& inputFrom, const std::string& inputFileName, const std::string& outputFileName)
         {
             Calculator();
 
@@ -56,7 +56,7 @@ class Calculator
             Input(inputFrom);
         }
 
-        void Input(InputType inputFrom, const std::string& expression = "")
+        void Input(const InputType& inputFrom, const std::string& expression = "")
         {
             inputType = inputFrom;
 
