@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include <vector>
 
+// optimize stack size
 class Stack
 {
   enum { SIZE = 100 };
@@ -153,19 +153,83 @@ class Calculator
 
             for (int i = 0; i < input.length(); ++i)
             {
-                if (')' == input[i])
+                char c = input[i];
+
+                if (c == ')')
                 {
-                    while ('(' != st.Peek()) out += st.Pop();
+                    while (st.Peek() != '(')
+                    {
+                        out += st.Pop();
+                    }
+
                     st.Pop();
+                }
+
+                if (c >= '0' && c <= '9')
+                {
+                    out += c;
+                }
+
+                if (c == '(')
+                {
+                    st.Push(c);
+                }
+
+                if(c == '+' || c == '-' || c == '/' || c == '*')
+                {
+                    if (st.isEmpty())
+                    {
+                        st.Push(c);
+                    }
+                    else
+                    {
+                        if (priority(st.Peek()) < priority(c))
+                        {
+                            st.Push(c);
+                        }
+                        else
+                        {
+                            while (!st.isEmpty() && (priority(st.Peek()) >= priority(c)))
+                            {
+                                out += st.Pop();
+                            }
+
+                            st.Push(c);
+                        }
+                    }
                 }
             }
 
-            calculationDone = true;
+            while (!st.isEmpty())
+            {
+                out += st.Pop();
+            }
+
+            std::cout << "Polish notation: " << out << std::endl;
+        }
+
+        int priority(char sign)
+        {
+            switch(sign)
+            {
+                case '*':
+                case '/':
+                    return 3;
+
+                case '-':
+                case '+':
+                    return 2;
+
+                case '(':
+                    return 1;
+            }
         }
 
         double calculate()
         {
+            // calculate
 
+            calculationDone = true;
         }
 };
 
