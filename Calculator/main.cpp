@@ -1,20 +1,7 @@
 #include <iostream>
 #include <fstream>
-
-// optimize stack size
-class Stack
-{
-    public:
-        Stack() { head = 0; }
-
-        void Push(char val) { body[head++] = val; }
-        char Pop() { return body[--head]; }
-        char Peek() { return body[head-1]; }
-        bool isEmpty() { return head == 0; }
-    private:
-        char body[100];
-        int head;
-};
+#include <string>
+#include <stack>
 
 enum class InputType
 {
@@ -72,11 +59,13 @@ class Calculator
 
         void Input(const InputType& inputFrom, const std::string& expression = "")
         {
-            if (InputType::Console == inputFrom)
+            inputType = inputFrom;
+
+            if (InputType::Console == inputType)
             {
                 std::getline(std::cin, input);
             }
-            else if (InputType::File == inputFrom)
+            else if (InputType::File == inputType)
             {
                 std::ifstream inputFile(InputFileName);
 
@@ -88,12 +77,12 @@ class Calculator
                 }
                 else
                 {
-                    std::cout << "Can't open a file named " << InputFileName << std::endl;
+                    std::cout << "Can't read from file named " << InputFileName << std::endl;
 
                     return;
                 }
             }
-            else if (InputType::Constructor == inputFrom)
+            else if (InputType::Constructor == inputType)
             {
                 input = expression;
             }
@@ -101,7 +90,7 @@ class Calculator
             processInput();
         }
 
-        double Output()
+        long Output()
         {
             if (!calculationDone) throw calc_not_done;
 
@@ -121,7 +110,7 @@ class Calculator
                 }
                 else
                 {
-                    std::cout << "Can't read a file named " << OutputFileName << std::endl;
+                    std::cout << "Can't create a file named " << OutputFileName << std::endl;
 
                     return result;
                 }
@@ -137,14 +126,15 @@ class Calculator
         }
 
     private:
-        double result;
+        long result;
         bool calculationDone;
         InputType inputType;
         std::string input;
 
+        // add ^ operator
         void processInput()
         {
-            Stack st;
+            std::stack<char> st;
             std::string out;
 
             for (int i = 0; i < input.length(); ++i)
@@ -153,12 +143,12 @@ class Calculator
 
                 if (c == ')')
                 {
-                    while (st.Peek() != '(')
+                    while (st.top() != '(')
                     {
-                        out += st.Pop();
+                        out += st.top();
+                        st.pop();
                     }
-
-                    st.Pop();
+                    st.pop();
                 }
 
                 if (c >= '0' && c <= '9')
@@ -168,43 +158,48 @@ class Calculator
 
                 if (c == '(')
                 {
-                    st.Push(c);
+                    st.push(c);
                 }
 
                 if(c == '+' || c == '-' || c == '/' || c == '*')
                 {
-                    if (st.isEmpty())
+                    if (st.empty())
                     {
-                        st.Push(c);
+                        st.push(c);
                     }
                     else
                     {
-                        if (priority(st.Peek()) < priority(c))
+                        if (operationPriority(st.top()) < operationPriority(c))
                         {
-                            st.Push(c);
+                            st.push(c);
                         }
                         else
                         {
-                            while (!st.isEmpty() && (priority(st.Peek()) >= priority(c)))
+                            while (!st.empty() && (operationPriority(st.top()) >= operationPriority(c)))
                             {
-                                out += st.Pop();
+                                out += st.top();
+                                st.pop();
                             }
 
-                            st.Push(c);
+                            st.push(c);
                         }
                     }
                 }
             }
 
-            while (!st.isEmpty())
+            while (!st.empty())
             {
-                out += st.Pop();
+                out += st.top();
+                st.pop();
             }
 
-            std::cout << "Polish notation: " << out << std::endl;
+            input = out;
+
+            calculateOutput();
         }
 
-        int priority(char sign)
+        // add ^ operator
+        int operationPriority(char sign)
         {
             switch(sign)
             {
@@ -221,9 +216,48 @@ class Calculator
             }
         }
 
-        double calculate()
+        // add ^ operator
+        long calculateOutput()
         {
-            // calculate
+            std::stack<std::string> st;
+
+            for (int i = 0; i < input.length(); ++i)
+            {
+                char c = input[i];
+
+                if(c == '+' || c == '-' || c == '*' || c == '/')
+                {
+                    long a = std::stol(st.top());
+                    st.pop();
+                    long b = std::stol(st.top());
+                    st.pop();
+
+                    switch(c)
+                    {
+                        case '+':
+                            st.push(std::to_string(a + b));
+                            break;
+
+                        case '-':
+                            st.push(std::to_string(a - b));
+                            break;
+
+                        case '*':
+                            st.push(std::to_string(a * b));
+                            break;
+
+                        case '/':
+                            st.push(std::to_string(a / b));
+                            break;
+                    }
+                }
+                else
+                {
+                    st.push(std::to_string(c));
+                }
+            }
+
+            result = std::stol(st.top());
 
             calculationDone = true;
         }
