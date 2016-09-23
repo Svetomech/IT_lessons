@@ -217,7 +217,7 @@ class Calculator
         }
 
         // add ^ operator
-        long calculateOutput(const string& rpnString)
+        long calculateOutput(const std::string& rpnString)
         {
             std::stack<std::string> st;
 
