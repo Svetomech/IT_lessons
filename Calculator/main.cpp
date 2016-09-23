@@ -276,6 +276,6 @@ int main()
     calc2->Output();
 
     // Use case #3 - expression in a constructor
-    auto calc3 = new Calculator(InputType::Constructor, "2*5-7/3+(2-1/2)"); // brackets supported
-    calc3->Output();
+    auto calc3 = new Calculator(InputType::Constructor, "2*5-6/3+(2-1/2)"); // brackets supported
+    std::cout << calc3->Output();
 }
