@@ -193,9 +193,9 @@ class Calculator
                 st.pop();
             }
 
-            input = out;
+            input = out; // std::cout << "RPN: " << out << std::endl;
 
-            calculateOutput();
+            result = calculateOutput();
         }
 
         // add ^ operator
@@ -223,43 +223,43 @@ class Calculator
 
             for (int i = 0; i < input.length(); ++i)
             {
-                char c = input[i];
+                char c = input[i]; // std::cout << "c: " << c << std::endl;
 
-                if(c == '+' || c == '-' || c == '*' || c == '/')
+                if (c == '+' || c == '-' || c == '*' || c == '/')
                 {
-                    long a = std::stol(st.top());
+                    long a = std::stol(st.top()); // std::cout << "a: " << a;
                     st.pop();
-                    long b = std::stol(st.top());
+                    long b = std::stol(st.top()); // std::cout << "b: " << b << std::endl;
                     st.pop();
 
                     switch(c)
                     {
                         case '+':
-                            st.push(std::to_string(a + b));
+                            st.push(std::to_string(b + a));
                             break;
 
                         case '-':
-                            st.push(std::to_string(a - b));
+                            st.push(std::to_string(b - a));
                             break;
 
                         case '*':
-                            st.push(std::to_string(a * b));
+                            st.push(std::to_string(b * a));
                             break;
 
                         case '/':
-                            st.push(std::to_string(a / b));
+                            st.push(std::to_string(b / a));
                             break;
                     }
                 }
                 else
                 {
-                    st.push(std::to_string(c));
+                    st.push(std::string(1, c)); // std::cout << "pushed c: " << std::string(1, c) << std::endl;
                 }
             }
 
-            result = std::stol(st.top());
-
             calculationDone = true;
+
+            return std::stol(st.top());
         }
 };
 
