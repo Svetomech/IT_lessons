@@ -101,7 +101,7 @@ class Calculator
                 input = expression;
             }
 
-            calculate();
+            processInput();
         }
 
         double Output()
@@ -145,11 +145,26 @@ class Calculator
         InputType inputType;
         std::string input;
 
-        double calculate()
+        void processInput()
         {
-            // calculate
+            Stack st;
+            std::string out;
+
+            for (int i = 0; i < input.length(); ++i)
+            {
+                if (')' == input[i])
+                {
+                    while ('(' != st.Peek()) out += st.Pop();
+                    st.Pop();
+                }
+            }
 
             calculationDone = true;
+        }
+
+        double calculate()
+        {
+
         }
 };
 
