@@ -59,21 +59,35 @@ class Calculator
         void Input(const InputType& inputFrom, const std::string& expression = "")
         {
             inputType = inputFrom;
+            std::string input;
 
             if (InputType::Console == inputType)
             {
-                // use std::cin
+                std::getline(std::cin, input);
             }
             else if (InputType::File == inputType)
             {
-                // use std::ifstream
+                std::ifstream inputFile(InputFileName);
+
+                if (inputFile.is_open())
+                {
+                    std::getline(inputFile, input);
+
+                    inputFile.close();
+                }
+                else
+                {
+                    std::cout << "Can't open a file named " << InputFileName << std::endl;
+
+                    return;
+                }
             }
             else if (InputType::Constructor == inputType)
             {
-                // use string splitting
+                input = expression;
             }
 
-            // parse the expression, send two arguments to calculate()
+            calculate(input);
         }
 
         double Output()
@@ -96,7 +110,7 @@ class Calculator
                 }
                 else
                 {
-                    std::cout << "Can't create a file named " << OutputFileName << std::endl;
+                    std::cout << "Can't read a file named " << OutputFileName << std::endl;
 
                     return result;
                 }
@@ -116,7 +130,7 @@ class Calculator
         bool calculationDone;
         InputType inputType;
 
-        double calculate(const std::vector<double>& digits, const std::vector<char>& operators)
+        double calculate(const std::string& input)
         {
             // calculate
 
