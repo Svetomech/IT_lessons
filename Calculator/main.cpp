@@ -193,9 +193,9 @@ class Calculator
                 st.pop();
             }
 
-            input = out; // std::cout << "RPN: " << out << std::endl;
+            // std::cout << "RPN: " << out << std::endl;
 
-            result = calculateOutput();
+            result = calculateOutput(out);
         }
 
         // add ^ operator
@@ -217,13 +217,13 @@ class Calculator
         }
 
         // add ^ operator
-        long calculateOutput()
+        long calculateOutput(const string& rpnString)
         {
             std::stack<std::string> st;
 
-            for (int i = 0; i < input.length(); ++i)
+            for (int i = 0; i < rpnString.length(); ++i)
             {
-                char c = input[i]; // std::cout << "c: " << c << std::endl;
+                char c = rpnString[i]; // std::cout << "c: " << c << std::endl;
 
                 if (c == '+' || c == '-' || c == '*' || c == '/')
                 {
