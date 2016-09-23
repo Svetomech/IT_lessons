@@ -58,14 +58,11 @@ class Calculator
 
         void Input(const InputType& inputFrom, const std::string& expression = "")
         {
-            inputType = inputFrom;
-            std::string input;
-
-            if (InputType::Console == inputType)
+            if (InputType::Console == inputFrom)
             {
                 std::getline(std::cin, input);
             }
-            else if (InputType::File == inputType)
+            else if (InputType::File == inputFrom)
             {
                 std::ifstream inputFile(InputFileName);
 
@@ -82,12 +79,12 @@ class Calculator
                     return;
                 }
             }
-            else if (InputType::Constructor == inputType)
+            else if (InputType::Constructor == inputFrom)
             {
                 input = expression;
             }
 
-            calculate(input);
+            calculate();
         }
 
         double Output()
@@ -129,8 +126,9 @@ class Calculator
         double result;
         bool calculationDone;
         InputType inputType;
+        std::string input;
 
-        double calculate(const std::string& input)
+        double calculate()
         {
             // calculate
 
