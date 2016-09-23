@@ -4,20 +4,16 @@
 // optimize stack size
 class Stack
 {
-  enum { SIZE = 100 };
-  char body[SIZE];
-  int head;
-public:
-  Stack()
-  {
-    head = 0;
-  }
-  ~Stack() {}
+    public:
+        Stack() { head = 0; }
 
-  void Push(char val) { body[head++] = val; }
-  char Pop() { return body[--head]; }
-  char Peek() { return body[head-1]; }
-  bool isEmpty() { return head == 0; }
+        void Push(char val) { body[head++] = val; }
+        char Pop() { return body[--head]; }
+        char Peek() { return body[head-1]; }
+        bool isEmpty() { return head == 0; }
+    private:
+        char body[100];
+        int head;
 };
 
 enum class InputType
