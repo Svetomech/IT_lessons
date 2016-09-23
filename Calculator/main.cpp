@@ -2,6 +2,23 @@
 #include <fstream>
 #include <vector>
 
+class Stack
+{
+  enum { SIZE = 100 };
+  int body[SIZE];
+  int head;
+public:
+  Stack()
+  {
+    head = 0;
+  }
+  ~Stack() {}
+
+  void Push(int val) { body[head++] = val; }
+  int Pop() { return body[--head]; }
+  bool isEmpty() { return head == 0; }
+};
+
 enum class InputType
 {
     Console,
