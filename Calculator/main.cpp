@@ -5,7 +5,7 @@
 class Stack
 {
   enum { SIZE = 100 };
-  int body[SIZE];
+  char body[SIZE];
   int head;
 public:
   Stack()
@@ -14,8 +14,9 @@ public:
   }
   ~Stack() {}
 
-  void Push(int val) { body[head++] = val; }
-  int Pop() { return body[--head]; }
+  void Push(char val) { body[head++] = val; }
+  char Pop() { return body[--head]; }
+  char Peek() { return body[head-1]; }
   bool isEmpty() { return head == 0; }
 };
 
