@@ -11,7 +11,10 @@ int main()
     
     for (int i = 0; i < l; ++i)
     {
-        isPalindrome = (number[i] == number[l - i - 1]) && isPalindrome;
+        int digit = number[i];
+        int digitFromEnd = number[l - i - 1];
+        
+        isPalindrome = (digit == digitFromEnd) && isPalindrome;
     }
     
     std::cout << (isPalindrome ? "Number is palindrome" : "Number is NOT palindrome") << std::endl;
