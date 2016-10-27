@@ -35,6 +35,7 @@ int main()
     {
         int leftPosition = digitsCount / 2;
         int rightPosition = leftPosition + 1;
+        
         while (leftPosition > 0 && rightPosition <= digitsCount)
         {
             int leftNum = pullDigit(number, digitsCount - leftPosition);
