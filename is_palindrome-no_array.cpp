@@ -38,23 +38,23 @@ int main()
         
         while (leftPosition > 0 && rightPosition <= digitsCount)
         {
-            int leftNum = pullDigit(number, digitsCount - leftPosition);
-            int rightNum = pullDigit(number, digitsCount - rightPosition);
+            int leftDigit = pullDigit(number, digitsCount - leftPosition);
+            int rightDigit = pullDigit(number, digitsCount - rightPosition);
             
             leftPosition--;
             rightPosition++;
             
-            isPalindrome = (leftNum == rightNum) && isPalindrome;
+            isPalindrome = (leftDigit == rightDigit) && isPalindrome;
         }
     }
     else
     {
         do
         {
-            int num = number % 10;
-            int nextNum = (number / 10) % 10;
+            int digit = number % 10;
+            int nextDigit = (number / 10) % 10;
             
-            isPalindrome = (num == nextNum) && isPalindrome;
+            isPalindrome = (digit == nextDigit) && isPalindrome;
         } while ((number /= 10) && number / 10);
     }
     
