@@ -15,6 +15,9 @@ int main()
         int digitFromEnd = number[l - i - 1];
         
         isPalindrome = (digit == digitFromEnd) && isPalindrome;
+
+        if (!isPalindrome)
+            break;
     }
     
     std::cout << (isPalindrome ? "Number is palindrome" : "Number is NOT palindrome") << std::endl;
