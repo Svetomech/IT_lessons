@@ -14,7 +14,7 @@ int main()
         int digit = number[i];
         int digitFromEnd = number[l - i - 1];
         
-        isPalindrome = (digit == digitFromEnd) && isPalindrome;
+        isPalindrome = digit == digitFromEnd;
 
         if (!isPalindrome)
             break;
