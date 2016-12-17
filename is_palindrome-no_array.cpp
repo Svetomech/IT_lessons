@@ -44,7 +44,10 @@ int main()
             leftPosition--;
             rightPosition++;
             
-            isPalindrome = (leftDigit == rightDigit) && isPalindrome;
+            isPalindrome = leftDigit == rightDigit;
+
+            if (!isPalindrome)
+                break;
         }
     }
     else
@@ -54,7 +57,10 @@ int main()
             int digit = number % 10;
             int nextDigit = (number / 10) % 10;
             
-            isPalindrome = (digit == nextDigit) && isPalindrome;
+            isPalindrome = digit == nextDigit;
+
+            if (!isPalindrome)
+                break;
         } while ((number /= 10) && number / 10);
     }
     
