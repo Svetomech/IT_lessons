@@ -9,7 +9,7 @@ int main()
     
     int l = number.length();
     
-    for (int i = 0; i < l; ++i)
+    for (int i = 0; i < l / 2; ++i)
     {
         int digit = number[i];
         int digitFromEnd = number[l - i - 1];
